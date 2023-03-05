@@ -14,7 +14,7 @@
 
 namespace upp {
 
-template <class T>
+template <class T, typename std::enable_if<std::is_integral<T>::value>::type* = nullptr>
 class fraction {
 
 private:
