@@ -47,6 +47,8 @@ public:
             this->numerator *= (-1);
     }
     
+    fraction(const fraction& other) : numerator(other.numerator), denominator(other.denominator) {}
+    
     T get_numerator(void)
     {
         return this->numerator;
