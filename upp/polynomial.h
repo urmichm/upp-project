@@ -38,6 +38,30 @@ public:
         return coef.size() - 1;
     }
     
+    T leading_coefficient() const {
+        return coef[ deg() ];
+    }
+
+    T leading_coefficient() {
+        return coef[ deg() ];
+    }
+
+    polynomial<T> operator+(const polynomial<T>& other){
+        const size_t min_degree = std::min(this->deg(), other.deg());
+        std::vector<T> c_coef;
+        if(this->deg() > other.deg()){
+            c_coef = std::vector<T>(this->coef);
+        }
+        else {
+            c_coef = std::vector<T>(other.coef);
+        }
+        
+        for(size_t i=0; i <= min_degree; i++){
+            c_coef[i] = this->coef[i] + other.coef[i];
+        }
+        
+        return polynomial<T>(c_coef);
+    }
     
     T operator() (T x){
         T result = 0;
@@ -47,27 +71,9 @@ public:
         return result;
     }
     
-    std::string to_string(void) {
-        std::string result = "";
-        size_t const deg = this->deg();
-
-        result += std::to_string(coef[deg]);
-        if(deg != 0 )
-            result += " x^" + std::to_string(deg);
-        
-        for(size_t i = 0; i <= (deg-1); i++)
-        {
-            const size_t c = deg - 1 - i;
-            result += " + " + std::to_string(coef[c]);
-            if(c == 1)
-                result += " x";
-            else if(c != 0 )
-                result += " x^" + std::to_string(c);
-        }
-
-        return result;
+    T operator[](const size_t i) const{
+        return coef[i];
     }
-    
 };
 
 
