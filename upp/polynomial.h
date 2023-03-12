@@ -46,7 +46,8 @@ public:
         return coef[ deg() ];
     }
 
-    polynomial<T> operator+(const polynomial<T>& other){
+    polynomial<T> operator+(const polynomial<T>& other)
+    {
         const size_t min_degree = std::min(this->deg(), other.deg());
         std::vector<T> c_coef;
         if(this->deg() > other.deg()){
