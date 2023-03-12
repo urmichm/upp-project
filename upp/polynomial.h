@@ -45,6 +45,15 @@ public:
     T leading_coefficient() {
         return coef[ deg() ];
     }
+    
+    void scalar_multiply(const T a)
+    {
+        for(T& c : coef)
+        {
+            c = c * a;
+        }
+        return;
+    }
 
     polynomial<T> operator+(const polynomial<T>& other)
     {
