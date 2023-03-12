@@ -192,6 +192,12 @@ public:
     {
         return fraction<T>(f.numerator < 0 ? (-1)*f.numerator : f.numerator, f.denominator);
     }
+    
+    friend fraction<T> pow(const fraction<T>& base, const T power)
+    {
+        return fraction<T>(std::pow(base.numerator, power) ,
+                           std::pow(base.denominator, power) );
+    }
 
 };
 
