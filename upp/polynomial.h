@@ -37,7 +37,15 @@ public:
     size_t deg(void) {
         return coef.size() - 1;
     }
+
+    size_t size(void) const {
+        return coef.size();
+    }
     
+    size_t size(void) {
+        return coef.size();
+    }
+
     T leading_coefficient() const {
         return coef[ deg() ];
     }
@@ -57,19 +65,37 @@ public:
 
     polynomial<T> operator+(const polynomial<T>& other)
     {
-        const size_t min_degree = std::min(this->deg(), other.deg());
-        std::vector<T> c_coef;
-        if(this->deg() > other.deg()){
-            c_coef = std::vector<T>(this->coef);
-        }
-        else {
-            c_coef = std::vector<T>(other.coef);
+        const size_t max_degree = std::max(size(), other.size());
+        std::vector<T> c_coef(max_degree, 0);
+        
+        for(size_t i = 0; i < size(); i++)
+        {
+            c_coef[i] = coef[i];
         }
         
-        for(size_t i=0; i <= min_degree; i++){
-            c_coef[i] = this->coef[i] + other.coef[i];
+        for(size_t i = 0; i < other.size(); i++)
+        {
+            c_coef[i] = coef[i] + other[i];
+        }
+
+        return polynomial<T>(c_coef);
+    }
+
+    polynomial<T> operator-(const polynomial<T>& other)
+    {
+        const size_t max_degree = std::max(size(), other.size());
+        std::vector<T> c_coef(max_degree, 0);
+        
+        for(size_t i = 0; i < size(); i++)
+        {
+            c_coef[i] = coef[i];
         }
         
+        for(size_t i = 0; i < other.size(); i++)
+        {
+            c_coef[i] = coef[i] - other[i];
+        }
+
         return polynomial<T>(c_coef);
     }
     
