@@ -132,7 +132,7 @@ public:
         return fraction<T>( this->numerator * other.numerator, this->denominator * other.denominator );
     }
     
-    upp::fraction<T> operator/(const upp::fraction<T>& other)
+    fraction<T> operator/(const upp::fraction<T>& other)
     {
         return fraction<T>( this->numerator * other.denominator, this->denominator * other.numerator );
     }
