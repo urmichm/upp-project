@@ -132,7 +132,7 @@ public:
         return fraction<T>( this->numerator * other.numerator, this->denominator * other.denominator );
     }
     
-    upp::fraction<T> operator/(const upp::fraction<T>& other)
+    fraction<T> operator/(const upp::fraction<T>& other)
     {
         return fraction<T>( this->numerator * other.denominator, this->denominator * other.numerator );
     }
@@ -191,6 +191,12 @@ public:
     friend fraction<T> abs(const fraction<T>& f)
     {
         return fraction<T>(f.numerator < 0 ? (-1)*f.numerator : f.numerator, f.denominator);
+    }
+    
+    friend fraction<T> pow(const fraction<T>& base, const T power)
+    {
+        return fraction<T>(std::pow(base.numerator, power) ,
+                           std::pow(base.denominator, power) );
     }
 
 };
