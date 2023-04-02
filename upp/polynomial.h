@@ -38,12 +38,76 @@ private:
         return C;
     }
     
+    std::vector<T> add(const std::vector<T>& a, const std::vector<T>& b) {
+        size_t n = a.size();
+        std::vector<T> result(n);
+
+        for (size_t i = 0; i < n; i++) {
+            result[i] = a[i] + b[i];
+        }
+
+        return result;
+    }
+    
+    std::vector<T> karatsuba_helper(const std::vector<T>& a, const std::vector<T>& b)
+    {
+        const size_t n = a.size();
+        std::vector<T> result(2 * n);
+
+        if (n < KARATSUBA_THRESHOLD) {
+            std::vector<T> broute = multiply(a, b);
+            std::copy(broute.begin(), broute.end(), result.begin());
+            return result;
+        }
+
+        const size_t m = n / 2;
+        
+        std::vector<T> a_lo(a.begin(), a.begin() + m);
+        std::vector<T> a_hi(a.begin() + m, a.end());
+        std::vector<T> b_lo(b.begin(), b.begin() + m);
+        std::vector<T> b_hi(b.begin() + m, b.end());
+
+        std::vector<T> P0 = karatsuba_helper(a_lo, b_lo);
+        std::vector<T> P1 = karatsuba_helper(a_hi, b_hi);
+        std::vector<T> P2 = karatsuba_helper(add(a_lo, a_hi), add(b_lo, b_hi));
+
+        for (size_t i = 0; i < n; i++)
+        {
+            result[i] += P0[i];
+            result[i + n] += P1[i];
+            result[i + m] += P2[i] - P0[i] - P1[i];
+        }
+
+        return result;
+    }
+    
 public:
     
     polynomial(std::vector<T> coefficients) : coef(coefficients) { }
     
     polynomial(const polynomial<T>& other){
         this->coef = std::vector<T>(other.coef);
+    }
+    
+    polynomial<T> karatsuba(const polynomial<T>& other)
+    {
+        size_t s = coef.size() + other.coef.size();
+
+        size_t SIZE = 1;
+        while (SIZE < s) SIZE <<= 1;
+
+        std::vector<T> A(SIZE), B(SIZE);
+        std::copy(coef.begin(), coef.end(), A.begin());
+        std::copy(other.coef.begin(), other.coef.end(), B.begin());
+
+        std::vector<T> result = karatsuba_helper(A, B);
+
+        /* Remove leading zeros */
+        while (result.size() > 1 && result.back() == 0) {
+            result.pop_back();
+        }
+
+        return result;
     }
     
     /// classical polynomial multiplication
